@@ -27,5 +27,6 @@ public:
     int diameterOfBinaryTree(TreeNode* root) {
         height(root);
         return maxDia;
+
     }
 };

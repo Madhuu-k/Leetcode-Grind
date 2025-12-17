@@ -12,14 +12,17 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
+
 class Solution {
 public:
-    bool isValid(TreeNode* root, long minVal,long maxVal){
+    bool isValid(TreeNode* root, long long minVal, long long maxVal){
         if(root == nullptr) return true;
         if(root -> val <= minVal || root -> val >= maxVal) return false;
         return isValid(root -> left, minVal, root -> val) && isValid(root -> right, root -> val, maxVal);
     }
+
     bool isValidBST(TreeNode* root) {
+        if(root == nullptr) return true;
         return isValid(root, LONG_MIN, LONG_MAX);
     }
 };
