@@ -1,4 +1,4 @@
-// Problem Link: https://leetcode.com/problems/binary-tree-level-order-traversal/
+// Problem Link: https://leetcode.com/problems/binary-tree-level-order-traversal-ii/
 // Time Complexity: O(n)
 
 /**
@@ -14,9 +14,9 @@
  */
 class Solution {
 public:
-    vector<vector<int>> levelOrder(TreeNode* root) {
-        vector<vector<int>> ans;
-        if(!root) return ans;
+    vector<vector<int>> levelOrderBottom(TreeNode* root) {
+        deque<vector<int>> ans;
+        if(!root) return {};
         queue<TreeNode*> q;
         q.push(root);
         while(!q.empty()){
@@ -29,8 +29,9 @@ public:
                 if(node -> left) q.push(node -> left);
                 if(node -> right) q.push(node -> right);
             }
-            ans.push_back(level);
+            ans.push_front(level);
         }
-        return ans;
+        vector<vector<int>> result(ans.begin(), ans.end());
+        return result;
     }
 };
