@@ -1,7 +1,6 @@
 // Problem Link: https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
 // Time Complexity: o(n)
-
-/**
+;/**
  * Definition for a binary tree node.
  * struct TreeNode {
  *     int val;
@@ -14,21 +13,21 @@
  */
 class Solution {
 public:
-    unordered_map<int, int> inorderMap;
-    int preorderIndex = 0;
+    unordered_map<int, int> inorderIndex;
+    int preIndex = 0;
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        for(int i = 0; i < inorder.size(); i++) inorderMap[inorder[i]] = i;
-        return build(preorder, 0, inorder.size() - 1);
+        for(int i = 0; i < inorder.size(); i++) inorderIndex[inorder[i]] = i;
+        return Build(preorder, 0, inorder.size() - 1);
     }
 
-    TreeNode* build(vector<int>& preorder, int inStart, int inEnd){
-        if(inStart > inEnd) return nullptr;
-        int rootval = preorder[preorderIndex++];
-        TreeNode* root = new TreeNode(rootval);
-        int inIndex = inorderMap[rootval];
-
-        root -> left = build(preorder, inStart, inIndex - 1);
-        root -> right = build(preorder, inIndex + 1, inEnd);
+    TreeNode* Build(vector<int>& preorder, int startIn, int endIn){
+        if(startIn > endIn) return nullptr;
+        int rootVal = preorder[preIndex++];
+        TreeNode* root = new TreeNode(rootVal);
+        int mid = inorderIndex[rootVal];
+        root -> left = Build(preorder, startIn, mid - 1);
+        root -> right = Build(preorder, mid + 1, endIn);
         return root;
+
     }
 };
