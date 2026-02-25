@@ -1,6 +1,5 @@
 // Problem Link: https://leetcode.com/problems/reverse-nodes-in-k-group/submissions/1694016975/
 // Time Complexity: O(n)
-
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -15,28 +14,29 @@ class Solution {
 public:
     ListNode* reverseKGroup(ListNode* start, int k) {
         if(!start || k == 1) return start;
-        int count = 0;
-        ListNode* dummy = start;
-        while(dummy != nullptr && count < k){
-            dummy = dummy -> next;
-            count++;
-        }
+        ListNode* dummy = new ListNode(-1);
+        dummy -> next = start;
+        ListNode* groupPrev = dummy; // Initital starting of new List
 
-        if(count < k) return start;
-        //Reverse the list
-        ListNode* prev = nullptr;
-        ListNode* nextNode = nullptr;
-        ListNode* temp = start;
-        count = 0;
-        while(temp != nullptr && count < k){
-            nextNode = temp -> next;
-            temp -> next = prev;
-            prev = temp;
-            temp = nextNode;
-            count++;
-        }
+        while(true){
+            ListNode* kth = groupPrev;
+            for(int i = 0; i < k && kth != nullptr; i++) kth = kth -> next;
+            if(kth == nullptr) break;
+            ListNode* groupNext = kth -> next; // Points to next head (prev - more like nullptr)
 
-        if(nextNode) start -> next = reverseKGroup(nextNode, k);
-        return prev;
+            // Reversr the list till Kth
+            ListNode* prev = groupNext;
+            ListNode* curr = groupPrev -> next;
+            while(curr != groupNext){
+                ListNode* temp = curr -> next;
+                curr -> next = prev;
+                prev = curr;
+                curr = temp;
+            }
+            ListNode* temp = groupPrev -> next;
+            groupPrev -> next = kth;
+            groupPrev = temp;
+        }
+        return dummy -> next;
     }
 };
