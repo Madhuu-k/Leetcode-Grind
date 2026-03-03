@@ -3,40 +3,47 @@
 
 class Trie {
 public:
-    Trie* children[26];
-    bool isEndOfWord;
+    struct TrieNode{
+        TrieNode* children[26];
+        bool isEnd;
+        TrieNode(){
+            isEnd = false;
+            for(int i = 0; i < 26; i++) children[i] = nullptr;
+        }
+    };
+
+    TrieNode* root;
 
     Trie() {
-        isEndOfWord = false;
-        for(int i = 0; i < 26; i++) children[i] = nullptr;
+        root = new TrieNode();
     }
 
     void insert(string word) {
-        Trie* node = this;
+        TrieNode* node = root;
         for(char ch : word){
-            int idx = ch - 'a';
-            if(node -> children[idx] == nullptr) node -> children[idx] = new Trie();
-            node = node -> children[idx];
+            int index = ch - 'a';
+            if(node -> children[index] == nullptr) node -> children[index] = new TrieNode();
+            node = node -> children[index];
         }
-        node -> isEndOfWord = true;
+        node -> isEnd = true;
     }
 
     bool search(string word) {
-        Trie* node = this;
-        for(char ch : word){
-            int idx = ch - 'a';
-            if(node -> children[idx] == nullptr) return false;
-            node = node -> children[idx];
+        TrieNode* node = root;
+        for(char ch : word) {
+            int index = ch - 'a';
+            if(node -> children[index] == nullptr) return false;
+            node = node -> children[index];
         }
-        return node -> isEndOfWord;
+        return node -> isEnd;
     }
 
     bool startsWith(string prefix) {
-        Trie* node = this;
-        for(char ch : prefix){
-            int idx = ch - 'a';
-            if(node -> children[idx] == nullptr) return false;
-            node = node -> children[idx];
+        TrieNode* node = root;
+        for(char ch : prefix) {
+            int index = ch - 'a';
+            if(node -> children[index] == nullptr) return false;
+            node = node -> children[index];
         }
         return true;
     }
