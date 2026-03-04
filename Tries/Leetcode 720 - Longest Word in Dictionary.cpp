@@ -1,46 +1,61 @@
 // Problem Link: https://leetcode.com/problems/longest-word-in-dictionary/
 // Time Complexity: O(N*L)
 
-struct Trie{
-    Trie* children[26];
-    bool isEnd;
-    Trie(){
-        isEnd = false;
-        for(int i = 0; i < 26; i++) children[i] = nullptr;
-    }
-};
-
 class Solution {
-    Trie* root;
-    string ans;
+public:
+    struct Trie{
+        string word;
+        bool isEnd;
+        Trie* children[26];
+        Trie(){
+            word = "";
+            isEnd = false;
+            for(int i = 0; i < 26; i++) children[i] = nullptr;
+        }
+    };
 
-    void insert(string word){
+    void insert(Trie* root, string word){
         Trie* node = root;
-        for(char c : word){
-            int idx = c - 'a';
+        for(char ch : word){
+            int idx = ch - 'a';
             if(node -> children[idx] == nullptr) node -> children[idx] = new Trie();
             node = node -> children[idx];
         }
+        node -> word = word;
         node -> isEnd = true;
     }
 
-    void dfs(Trie* node, string& path){
-        if(node != root && !node -> isEnd) return;
-        if(path.size() > ans.size() || (path.size() == ans.size() && path < ans)) ans = path;
-        for(int i = 0; i < 26; i++){
-            if(node -> children[i] != nullptr){
-                path.push_back('a' + i);
-                dfs(node -> children[i], path);
-                path.pop_back();
+    string longestWord(Trie* root, vector<string>& words){
+        string ans = "";
+        for(string word : words){
+            Trie* node = root;
+            bool valid = true;
+            for(char ch : word){
+                int idx = ch - 'a';
+                if(node->children[idx] == nullptr){
+                    valid = false;
+                    break;
+                }
+                node = node->children[idx];
+                if(node->isEnd == false){
+                    valid = false;
+                    break;
+                }
+            }
+            if(valid){
+                if(word.length() > ans.length() ||
+                  (word.length() == ans.length() && word < ans)){
+                    ans = word;
+                  }
             }
         }
-    }
-public:
-    string longestWord(vector<string>& words) {
-        root = new Trie();
-        for(string& w : words) insert(w);
-        string path = "";
-        dfs(root, path);
+
         return ans;
+    }
+
+    string longestWord(vector<string>& words) {
+        Trie* root = new Trie();
+        for(string word : words) insert(root, word);
+        return longestWord(root, words);
     }
 };
