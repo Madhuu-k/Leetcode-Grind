@@ -14,17 +14,10 @@
  */
 class Solution {
 public:
-    bool pathSum(TreeNode* root, int targetSum, int currentSum){
-        if(root == nullptr) return false;
-        currentSum += root -> val;
-        if(!root -> left && !root -> right) return currentSum == targetSum;
-
-        bool left = pathSum(root -> left, targetSum, currentSum);
-        bool right = pathSum(root -> right, targetSum, currentSum);
-        return left || right;
-    }
-
     bool hasPathSum(TreeNode* root, int targetSum) {
-        return pathSum(root, targetSum, 0);
+        if(!root) return false;
+        if(!root -> left && !root -> right) return targetSum == root -> val;
+        return hasPathSum(root -> left, targetSum - root -> val) ||
+               hasPathSum(root -> right, targetSum - root -> val);
     }
 };
