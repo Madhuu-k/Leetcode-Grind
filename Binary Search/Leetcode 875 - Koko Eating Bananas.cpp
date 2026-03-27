@@ -3,23 +3,15 @@
 
 class Solution {
 public:
-    bool canEatAll(vector<int>& piles, int h, int k){
-        long long hours = 0;
-        for(int pile : piles) hours += (pile + k - 1) / k;
-        return hours <= h;
-    }
-
     int minEatingSpeed(vector<int>& piles, int h) {
-        int low = 1, high = *max_element(piles.begin(), piles.end());
-        int ans = high;
-        while(low <= high){
-            int mid = low + (high - low) / 2;
-            if(canEatAll(piles, h, mid)){
-                ans = mid;
-                high = mid - 1;
-            }
-            else low = mid + 1;
+        int l = 1, r = *max_element(piles.begin(), piles.end());
+        while(l < r){
+            int m = l + (r - l) / 2;
+            int hours = 0;
+            for(int pile : piles) hours += (pile + m - 1) / m;
+            if(hours <= h) r = m; // move left for smaller
+            else l = m + 1; // move right - not sufficient time
         }
-        return ans;
+        return l;
     }
 };

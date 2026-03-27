@@ -4,19 +4,21 @@
 class Solution {
 public:
     int search(vector<int>& nums, int target) {
-        int low = 0, high = nums.size() - 1;
-        while(low <= high){
-            int mid = low + (high -low) / 2;
-            if(nums[mid] == target) return mid;
+        int l = 0, r = nums.size() - 1;
+        while(l <= r){
+            int m = l + (r - l) / 2;
+            if(nums[m] == target) return m;
 
-            if(nums[low] <= nums[mid]){
-                if(nums[low] <= target && nums[mid] > target) high = mid - 1;
-                else low = mid + 1;
+            // Search Left
+            if(nums[l] <= nums[m]){
+                if(nums[l] <= target && nums[m] >= target) r = m - 1;
+                else l = m + 1;
             }
 
+            // Search Right
             else{
-                if(nums[mid] < target && nums[high] >= target) low = mid + 1;
-                else high = mid - 1;
+                if(nums[m] <= target && nums[r] >= target) l = m + 1;
+                else r = m - 1;
             }
         }
         return -1;
