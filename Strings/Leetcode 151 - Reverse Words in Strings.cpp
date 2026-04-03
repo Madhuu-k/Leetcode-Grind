@@ -4,24 +4,17 @@
 class Solution {
 public:
     string reverseWords(string s) {
-        string result = "";
-        int i = s.length() - 1;
+        stringstream ss(s);
+        string word;
+        vector<string> words;
 
-        while(i >= 0){
-            while(i >= 0 && s[i] == ' ') i--;
+        while(ss >> word) words.push_back(word);
+        reverse(words.begin(), words.end());
 
-            if(i < 0) break;
+        string res = "";
+        for(string w : words) res += w + " ";
+        if(!res.empty()) res.pop_back();
 
-            string word = "";
-
-            while(i >= 0 && s[i] != ' '){
-                word = s[i] + word;
-                i--;
-            }
-
-            if(result.length() == 0) result = word;
-            else result = result + ' ' + word ;
-        }
-        return result;
+        return res;
     }
 };
